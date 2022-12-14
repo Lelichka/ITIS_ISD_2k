@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Diagnostics;
+using System.Net;
 using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -77,6 +78,18 @@ public static class Handler
                     .ToArray();
                 
                 ret = method.Invoke(Activator.CreateInstance(controller), queryParams);
+
+                switch (method.Name)
+                {
+                    case "GetAccounts" :
+                        var cookie = request.Cookies["SessionId"];
+                        if (!(cookie != null && cookie.Value.Split(' ')[0] == "IsAuthorize:true"))
+                        {
+                            response.StatusCode = 401;
+                            return;
+                        }
+                        break;
+                }
                 response.ContentType = "Application/json";
                 response.StatusCode = (int)HttpStatusCode.OK;
                 buffer = Encoding.ASCII.GetBytes(JsonSerializer.Serialize(ret));
@@ -102,7 +115,7 @@ public static class Handler
                     case "Login":
                         var res = ((bool, int?))ret;
                         if (res.Item1)
-                            response.SetCookie(new Cookie("SessionId", $"IsAuthorize: true, Id={res.Item2.ToString()}"));
+                            response.SetCookie(new Cookie("SessionId", $"IsAuthorize:true, Id={res.Item2.ToString()}"));
                         response.StatusCode = (int)HttpStatusCode.OK;
                         break;
                     default:

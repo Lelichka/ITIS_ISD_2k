@@ -10,7 +10,6 @@ public class Accounts
     [HttpGet("list")]
     public List<Account> GetAccounts()
     {
-
         var list = new AccountRepository(strConnection).FindAll();
         return list.ToList();
     }
