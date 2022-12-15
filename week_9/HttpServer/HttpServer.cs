@@ -80,10 +80,11 @@ public class HttpServer
 
         byte[] buffer = new byte[]{};
 
-        Handler.FilesHandler(settings.Path, context, out buffer);
+        var handler = new Handler(context,settings);
+        handler.FilesHandler(settings.Path, out buffer);
 
         if (response.StatusCode == (int)HttpStatusCode.NotFound)
-            Handler.MethodHandler(context, out buffer);
+            handler.MethodHandler( out buffer);
         return buffer;
     }
     

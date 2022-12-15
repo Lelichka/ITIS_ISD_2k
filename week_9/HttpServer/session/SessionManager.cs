@@ -13,25 +13,26 @@ public class SessionManager
     
     private MemoryCache _cache = new(new MemoryCacheOptions());
 
-    public void CreateSession(int id, int accountId, string login, DateTime createDateTime)
+    public Guid CreateSession(int accountId, string login, DateTime createDateTime)
     {
-        object key = id;
-        var session = new Session(id, accountId, login, createDateTime);
+        var guid = Guid.NewGuid();
+        var session = new Session(guid, accountId, login, createDateTime);
         var cacheEntryOptions = new MemoryCacheEntryOptions()
             .SetSlidingExpiration(TimeSpan.FromSeconds(120));
-        
-        _cache.Set(key, session, cacheEntryOptions);
+
+        _cache.Set(guid, session, cacheEntryOptions);
+        return guid;
     }
 
 
-    public bool CheckSession(object key)
+    public bool SessionExist(Guid guid)
     {
-        return _cache.TryGetValue(key, out _);
+        return _cache.TryGetValue(guid, out _);
     }
 
-    public Session? GetSessionInfo(object key)
+    public Session? GetSessionInfo(Guid guid)
     {
-        _cache.TryGetValue(key, out Session? session);
+        _cache.TryGetValue(guid, out Session? session);
         return session;
     }
 }

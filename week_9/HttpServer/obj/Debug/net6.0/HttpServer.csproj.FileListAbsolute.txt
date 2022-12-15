@@ -42,3 +42,9 @@ D:\ITIS\2022-2023\Inf\HttpServer\ITIS_ORIS_2k\week_9\HttpServer\obj\Debug\net6.0
 D:\ITIS\2022-2023\Inf\HttpServer\ITIS_ORIS_2k\week_9\HttpServer\obj\Debug\net6.0\HttpServer.pdb
 D:\ITIS\2022-2023\Inf\HttpServer\ITIS_ORIS_2k\week_9\HttpServer\obj\Debug\net6.0\HttpServer.genruntimeconfig.cache
 D:\ITIS\2022-2023\Inf\HttpServer\ITIS_ORIS_2k\week_9\HttpServer\obj\Debug\net6.0\ref\HttpServer.dll
+D:\ITIS\2022-2023\Inf\HttpServer\ITIS_ORIS_2k\week_9\HttpServer\bin\Debug\net6.0\Microsoft.Extensions.Caching.Abstractions.dll
+D:\ITIS\2022-2023\Inf\HttpServer\ITIS_ORIS_2k\week_9\HttpServer\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
+D:\ITIS\2022-2023\Inf\HttpServer\ITIS_ORIS_2k\week_9\HttpServer\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\ITIS\2022-2023\Inf\HttpServer\ITIS_ORIS_2k\week_9\HttpServer\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\ITIS\2022-2023\Inf\HttpServer\ITIS_ORIS_2k\week_9\HttpServer\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
+D:\ITIS\2022-2023\Inf\HttpServer\ITIS_ORIS_2k\week_9\HttpServer\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll

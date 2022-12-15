@@ -4,15 +4,28 @@ using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Text.Json;
+using HttpServer.MyORM;
+using HttpServer.session;
 
 namespace HttpServer;
 
-public static class Handler
+public class Handler
 {
-    public static void FilesHandler(string Path, HttpListenerContext context, out byte[] buffer)
+    private SessionManager _sessionManager;
+    private HttpListenerContext _listenerContext;
+    private AccountDAO _accountDao;
+    private static string _connectionStr;
+    public Handler(HttpListenerContext listenerContext,ServerSettings settings)
     {
-        var response = context.Response;
-        var request = context.Request;
+        _connectionStr = settings.SqlConnection;
+        _sessionManager = SessionManager.Instance;
+        _listenerContext = listenerContext;
+        _accountDao = new AccountDAO(_connectionStr);
+    }
+    public void FilesHandler(string Path, out byte[] buffer)
+    {
+        var response = _listenerContext.Response;
+        var request = _listenerContext.Request;
         var requestStr = request.RawUrl;
 
         buffer = new byte[]{};
@@ -20,13 +33,13 @@ public static class Handler
         Path = Path + requestStr;
 
 
-        if (Directory.Exists(Path ) )
+        if (Directory.Exists(Path))
         {
             response.Headers.Set("Content-Type","text/html");
             buffer = File.ReadAllBytes(Path  + @"html\index.html");
             response.StatusCode = (int)HttpStatusCode.OK;
         }
-        else if ( File.Exists(Path ))
+        else if ( File.Exists(Path))
         {
             response.Headers.Set("Content-Type",ContentTypeGetter.GetContentType(Path+requestStr));
             buffer = File.ReadAllBytes(Path);
@@ -34,10 +47,10 @@ public static class Handler
         }
     }
     
-    public static void MethodHandler(HttpListenerContext context, out byte[] buffer)
+    public void MethodHandler(out byte[] buffer)
     {
-        HttpListenerRequest request = context.Request;
-        HttpListenerResponse response = context.Response;
+        HttpListenerRequest request = _listenerContext.Request;
+        HttpListenerResponse response = _listenerContext.Response;
 
         buffer = new byte[]{};
         if (request.Url.Segments.Length < 2) return;
@@ -87,7 +100,8 @@ public static class Handler
                     case "GetAccounts":
                     {
                         var cookie = request.Cookies["SessionId"];
-                        if (!(cookie != null && cookie.Value.Split('_')[0] == "IsAuthorize:true"))
+                        var isCookieAndSessionExist = cookie is not null && _sessionManager.SessionExist(Guid.Parse(cookie.Value));
+                        if (!isCookieAndSessionExist)
                         {
                             response.StatusCode = 401;
                             return;
@@ -98,10 +112,12 @@ public static class Handler
                     case "GetAccountInfo" :
                     {
                         var cookie = request.Cookies["SessionId"];
-                        var cookieSplit = cookie.Value.Split('_');
-                        if (cookie != null && cookieSplit[0] == "IsAuthorize:true")
+                        var isCookieAndSessionExist = cookie is not null && _sessionManager.SessionExist(Guid.Parse(cookie.Value));
+                        
+                        if (isCookieAndSessionExist)
                         {
-                            queryParams = new object[] { int.Parse(cookieSplit[1].Split('=')[1]) };
+                            var session = _sessionManager.GetSessionInfo(Guid.Parse(cookie.Value));
+                            queryParams = new object[] { session.AccountId};
                         }
                         else
                         {
@@ -141,8 +157,12 @@ public static class Handler
                     {
                         var res = ((bool, int?))ret;
                         if (res.Item1)
-                            response.SetCookie(new Cookie("SessionId", $"IsAuthorize:true_Id={res.Item2.ToString()}"));
-                        response.StatusCode = (int)HttpStatusCode.OK;
+                        {
+                            var guid = _sessionManager.CreateSession(res.Item2!.Value,
+                                _accountDao.GetById(res.Item2.Value).Name, DateTime.Now);
+                            response.SetCookie(new Cookie("SessionId", guid.ToString()));
+                            response.StatusCode = (int)HttpStatusCode.OK;
+                        }
                         break;
                     }
                     default:
