@@ -16,7 +16,7 @@ public static class Handler
         var requestStr = request.RawUrl;
 
         buffer = new byte[]{};
-        Directory.SetCurrentDirectory(@"D:\ITIS\2022-2023\Inf\HttpServer\HttpServer");
+        Directory.SetCurrentDirectory(@"D:\ITIS\2022-2023\Inf\HttpServer\ITIS_ORIS_2k\week_9\HttpServer");
         Path = Path + requestStr;
 
 
@@ -68,28 +68,50 @@ public static class Handler
                 var methodsGet = controller.GetMethods().Where(t =>
                     t.GetCustomAttributes(true).Any(attr => attr.GetType().Name == "HttpGet"
                                                             && ((HttpCustomMethod)attr).MethodURI == strParams[0]));
+                if (methodsGet == null) return;
                 method = methodsGet.Where(method => method.GetParameters().Length == strParams.Length - 1).FirstOrDefault();
-                if (method == null) return;
-                
+                if (method == null) method = methodsGet.First();
+
                 strParams = strParams.Skip(1).ToArray();
+
+                queryParams = (method.GetParameters().Length == strParams.Length)
+                    ? method.GetParameters()
+                        .Select((p, i) => Convert.ChangeType(strParams[i], p.ParameterType))
+                        .ToArray()
+                    : null;
                 
-                queryParams = method.GetParameters()
-                    .Select((p, i) => Convert.ChangeType(strParams[i], p.ParameterType))
-                    .ToArray();
                 
-                ret = method.Invoke(Activator.CreateInstance(controller), queryParams);
 
                 switch (method.Name)
                 {
-                    case "GetAccounts" :
+                    case "GetAccounts":
+                    {
                         var cookie = request.Cookies["SessionId"];
-                        if (!(cookie != null && cookie.Value.Split(' ')[0] == "IsAuthorize:true"))
+                        if (!(cookie != null && cookie.Value.Split('_')[0] == "IsAuthorize:true"))
                         {
                             response.StatusCode = 401;
                             return;
                         }
                         break;
+                    }
+                        
+                    case "GetAccountInfo" :
+                    {
+                        var cookie = request.Cookies["SessionId"];
+                        var cookieSplit = cookie.Value.Split('_');
+                        if (cookie != null && cookieSplit[0] == "IsAuthorize:true")
+                        {
+                            queryParams = new object[] { int.Parse(cookieSplit[1].Split('=')[1]) };
+                        }
+                        else
+                        {
+                            response.StatusCode = 401;
+                            return;
+                        }
+                        break;
+                    }
                 }
+                ret = method.Invoke(Activator.CreateInstance(controller), queryParams);
                 response.ContentType = "Application/json";
                 response.StatusCode = (int)HttpStatusCode.OK;
                 buffer = Encoding.ASCII.GetBytes(JsonSerializer.Serialize(ret));
@@ -106,25 +128,30 @@ public static class Handler
                 ret = method.Invoke(Activator.CreateInstance(controller), queryParams);
                 switch (method.Name)
                 {
-                    case "SaveAccount": 
+                    case "SaveAccount":
+                    {
+                        
                         if ((bool)ret)
                             response.Redirect("http://store.steampowered.com/");
                         else 
                             response.Redirect("http://localhost:8888/");
                         break;
+                    }
                     case "Login":
+                    {
                         var res = ((bool, int?))ret;
                         if (res.Item1)
-                            response.SetCookie(new Cookie("SessionId", $"IsAuthorize:true, Id={res.Item2.ToString()}"));
+                            response.SetCookie(new Cookie("SessionId", $"IsAuthorize:true_Id={res.Item2.ToString()}"));
                         response.StatusCode = (int)HttpStatusCode.OK;
                         break;
+                    }
                     default:
+                    {
                         buffer = Encoding.ASCII.GetBytes(JsonSerializer.Serialize(ret));
                         response.StatusCode = (int)HttpStatusCode.OK;
                         break;
+                    }
                 }
-                break;
-            default:
                 break;
         }
     }

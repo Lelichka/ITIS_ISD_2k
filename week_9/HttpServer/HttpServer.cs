@@ -21,7 +21,7 @@ public class HttpServer
             Console.WriteLine("Сервер уже запущен");
             return;
         }
-        settings = JsonSerializer.Deserialize<ServerSettings>(File.ReadAllBytes(@"D:\ITIS\2022-2023\Inf\HttpServer\HttpServer\settings.json"));
+        settings = JsonSerializer.Deserialize<ServerSettings>(File.ReadAllBytes(@"D:\ITIS\2022-2023\Inf\HttpServer\ITIS_ORIS_2k\week_9\HttpServer\settings.json"));
         listener.Prefixes.Clear();
         listener.Prefixes.Add($"http://localhost:{settings.Port}/");
         listener.Start();

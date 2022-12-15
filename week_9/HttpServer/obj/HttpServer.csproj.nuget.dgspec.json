@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\ITIS\\2022-2023\\Inf\\HttpServer\\HttpServer\\HttpServer.csproj": {}
+    "D:\\ITIS\\2022-2023\\Inf\\HttpServer\\ITIS_ORIS_2k\\week_9\\HttpServer\\HttpServer.csproj": {}
   },
   "projects": {
-    "D:\\ITIS\\2022-2023\\Inf\\HttpServer\\HttpServer\\HttpServer.csproj": {
+    "D:\\ITIS\\2022-2023\\Inf\\HttpServer\\ITIS_ORIS_2k\\week_9\\HttpServer\\HttpServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\ITIS\\2022-2023\\Inf\\HttpServer\\HttpServer\\HttpServer.csproj",
+        "projectUniqueName": "D:\\ITIS\\2022-2023\\Inf\\HttpServer\\ITIS_ORIS_2k\\week_9\\HttpServer\\HttpServer.csproj",
         "projectName": "HttpServer",
-        "projectPath": "D:\\ITIS\\2022-2023\\Inf\\HttpServer\\HttpServer\\HttpServer.csproj",
+        "projectPath": "D:\\ITIS\\2022-2023\\Inf\\HttpServer\\ITIS_ORIS_2k\\week_9\\HttpServer\\HttpServer.csproj",
         "packagesPath": "C:\\Users\\olmen\\.nuget\\packages\\",
-        "outputPath": "D:\\ITIS\\2022-2023\\Inf\\HttpServer\\HttpServer\\obj\\",
+        "outputPath": "D:\\ITIS\\2022-2023\\Inf\\HttpServer\\ITIS_ORIS_2k\\week_9\\HttpServer\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\olmen\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -12,21 +12,21 @@ public class AccountDAO
     }
     public Account GetById(int id)
     {
-        return new Database(StrConnection).GetById<Account>(id, "Account");
+        return new Database(StrConnection).GetById<Account>(id, "Accounts");
     }
     public Account GetByName(string name)
     {
-        return new Database(StrConnection).GetByEmail<Account>(name, "Account");
+        return new Database(StrConnection).GetByEmail<Account>(name, "Accounts");
     }
 
     public IEnumerable<Account> FindAll()
     {
-        return new Database(StrConnection).Select<Account>( "Account");
+        return new Database(StrConnection).Select<Account>( "Accounts");
     }
 
     public void Create(Account entity)
     {
-        new Database(StrConnection).Insert(entity, "Account");
+        new Database(StrConnection).Insert(entity, "Accounts");
     }
 
     public void Update(Account entity)
@@ -36,6 +36,6 @@ public class AccountDAO
 
     public void Delete(Account entity)
     {
-        new Database(StrConnection).Delete(entity,"Account");
+        new Database(StrConnection).Delete(entity,"Accounts");
     }
 }

@@ -96,7 +96,7 @@ public class Database
     }
     public T? GetByEmail<T>(string name,string tableName)
     {
-        return ExecuteQuery<T>($"select {string.Join(',',typeof(T).GetProperties().Select(p => p.Name).ToList())} from {tableName} where Name = {name}").FirstOrDefault();
+        return ExecuteQuery<T>($"select {string.Join(',',typeof(T).GetProperties().Select(p => p.Name).ToList())} from {tableName} where Name = '{name}'").FirstOrDefault();
     }
     public void Insert<T>(T entity, string tableName)
     {

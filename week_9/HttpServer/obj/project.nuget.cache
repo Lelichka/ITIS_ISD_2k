@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "FdgSeU9QBzphBdFzF8fL/iZ4wbnna35NtyAIi87xz01w6Rr5kZ/quOe4548HSMBaarKaYpoO4xkr5bVTR2QPaQ==",
+  "dgSpecHash": "ep2RT82htGLs3fmCEMVc5nM117Q/3naduY4J5waqjySGTljzYk8asQ4Oekm3IbGfJhKfkFXz9BOicwfg9t5RUQ==",
   "success": true,
-  "projectFilePath": "D:\\ITIS\\2022-2023\\Inf\\HttpServer\\HttpServer\\HttpServer.csproj",
+  "projectFilePath": "D:\\ITIS\\2022-2023\\Inf\\HttpServer\\ITIS_ORIS_2k\\week_9\\HttpServer\\HttpServer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\olmen\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\olmen\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
