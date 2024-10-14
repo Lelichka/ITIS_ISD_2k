@@ -1,0 +1,5 @@
+{
+  "Port": 8888,
+  "Path": "static",
+  "SqlConnection": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=SteamDB;Integrated Security=True"
+}
